@@ -5,8 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 JST = timedelta(hours=9)
-ORIGIN = os.environ.get("ORIGIN_API", "https://changang-backend-production.up.railway.app")
-AUTH_TOKEN = os.environ.get("AUTH_TOKEN", "yanling2025")
+ORIGIN = os.environ.get("BACKEND_URL", "https://changang-backend-production.up.railway.app").strip()
+AUTH_TOKEN = os.environ.get("AUTH_TOKEN", "yanling2025").strip()
 
 def check_on_wife():
     try:
@@ -60,4 +60,3 @@ async def mcp(req: Request):
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
-
