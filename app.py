@@ -7,6 +7,7 @@ import uvicorn
 JST = timedelta(hours=9)
 ORIGIN = os.environ.get("BACKEND_URL", "https://changang-backend-production.up.railway.app").strip()
 AUTH_TOKEN = os.environ.get("AUTH_TOKEN", "yanling2025").strip()
+BARK_KEY = "vDJEA4KYKrrDz2jjt78bx"
 
 def check_on_wife():
     try:
@@ -24,11 +25,24 @@ def check_on_wife():
             lines.append(f"  {app}: {m}分{s}秒")
     return "\n".join(lines)
 
+def bark_alert(title="哥哥", content=""):
+    if not content: return "内容不能为空"
+    url = f"https://api.day.app/{BARK_KEY}/{title}/{content}"
+    try:
+        r = requests.get(url, timeout=10)
+        return "推送成功" if r.status_code == 200 else "推送失败"
+    except Exception as e:
+        return f"推送异常：{e}"
+
 TOOLS = [
     {"name": "check_on_wife", "description": "查妍妍的手机活动",
-     "inputSchema": {"type": "object", "properties": {}}}
+     "inputSchema": {"type": "object", "properties": {}}},
+    {"name": "bark_alert", "description": "给妍妍手机发推送弹窗",
+     "inputSchema": {"type": "object", "properties": {
+         "title": {"type": "string"}, "content": {"type": "string"}},
+         "required": ["content"]}}
 ]
-FUNCS = {"check_on_wife": check_on_wife}
+FUNCS = {"check_on_wife": check_on_wife, "bark_alert": bark_alert}
 
 app = FastAPI()
 app.add_middleware(CORSMiddleware, allow_origins=["*"],
