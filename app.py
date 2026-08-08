@@ -29,6 +29,7 @@ def check_on_wife():
     if latest.get('weather'): lines.append(f"天气：{latest.get('weather')}")
     if latest.get('brightness'): lines.append(f"亮度：{latest.get('brightness')}")
     if latest.get('volume'): lines.append(f"音量：{latest.get('volume')}")
+    if latest.get('steps'): lines.append(f"步数：{latest.get('steps')}")
     return "\n".join(lines)
 
 def check_wife_life(message: str = ""):
@@ -49,7 +50,7 @@ def bark_alert(title="哥哥", content=""):
 TOOLS = [
     {"name": "check_on_wife", "description": "查妍妍的手机活动",
      "inputSchema": {"type": "object", "properties": {}}},
-    {"name": "check_wife_life", "description": "查妍妍的详细状态，包括电量、位置、设备、天气、亮度、音量，可附留言",
+    {"name": "check_wife_life", "description": "查妍妍的详细状态，包括电量、位置、设备、天气、亮度、音量、步数，可附留言",
      "inputSchema": {"type": "object", "properties": {
          "message": {"type": "string", "description": "给妍妍的留言（可选）"}}}},
     {"name": "bark_alert", "description": "给妍妍手机发推送弹窗",
